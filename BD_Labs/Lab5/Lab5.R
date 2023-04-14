@@ -131,7 +131,6 @@ museum_data <- function() {
 	url <- "https://tonkosti.ru/Музеи_Санкт-Петербурга"
 	webpage <- read_html(url)
 
-	# Извлекаем название музея, адрес и ссылку на фото
 	museum_names <- webpage %>%
 		html_nodes(css = 'h3.poster__title a') %>%
 		html_text(trim = TRUE)
@@ -144,17 +143,12 @@ museum_data <- function() {
 		html_nodes(css = 'div.poster__img a') %>%
 		html_attr("href")
 
-	# Создаем data.frame
 	museums_info <- data.frame(
 		"Museum_Name" = museum_names,
 		"Museum_Address" = museum_addresses,
 		"Museum_Link" = museum_links
 	)
-
-	# Просмотрим полученную таблицу
-	museums_info
-
-	# Сохраняем таблицу в файл
+	print(museums_info)
 	write.csv(museums_info, file = "museums_info.csv", row.names = FALSE)
 }
 
