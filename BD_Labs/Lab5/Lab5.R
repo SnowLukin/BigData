@@ -32,11 +32,11 @@ load_csv_2016_2023 <- function() {
 		# Leave only Latvia, Estonia, Lithuania, Bulgaria, Hungary
 		table <- table %>% filter(Country %in% c("Latvia", "Estonia", "Lithuania", "Bulgaria", "Hungary"))
 	}
-	write.csv(table, "Lab5/QoL2016_2023.csv", row.names = FALSE)
+	write.csv(table, "BD_Labs/Lab5/QoL2016_2023.csv", row.names = FALSE)
 }
 
 countries_rating_all_years <- function() {
-	table <- read.csv("Lab5/QoL2016_2023.csv")
+	table <- read.csv("BD_Labs/Lab5/QoL2016_2023.csv")
 
 	lithuania <- table[table$Country == "Lithuania",]
 	estonia <- table[table$Country == "Estonia",]
@@ -54,7 +54,7 @@ countries_rating_all_years <- function() {
 }
 
 countries_properties_all_years <- function() {
-	table <- read.csv("Lab5/QoL2016_2023.csv")
+	table <- read.csv("BD_Labs/Lab5/QoL2016_2023.csv")
 
 	lithuania <- table[table$Country == "Lithuania",]
 	estonia <- table[table$Country == "Estonia",]
