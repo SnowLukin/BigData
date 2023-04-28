@@ -6,9 +6,15 @@ library(cluster)
 library(factoextra)
 library(NbClust)
 library(dendextend)
+library(caret)
+library(e1071)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+library(gridExtra)
 
 
-data <- read.csv("BD_Labs/Lab6_1/student_mat.csv", header=TRUE, sep=",")
+data <- read.csv("BD_Labs/Lab6/student_mat.csv", header=TRUE, sep=",")
 
 # Step 1: Descriptive analysis of the data
 summary(data)
@@ -135,3 +141,68 @@ scatterplot3d(x = numeric_data$G1, y = numeric_data$G2, z = numeric_data$G3,
 # print amount of students in each group
 print(table(groups))
 
+
+# Lab 6.2
+# Add the classes (groups) from the clustering analysis as a new column
+data$Group <- as.factor(groups)
+
+# Split the data into training and test sets
+set.seed(123)
+train_index <- createDataPartition(data$Group, p = 0.7, list = FALSE)
+train_data <- data[train_index, ]
+test_data <- data[-train_index, ]
+
+# Train a naive Bayes classifier
+nb_model <- naiveBayes(Group ~ ., data = train_data)
+
+# Predict the test data using the naive Bayes classifier
+test_data$predicted_group <- predict(nb_model, test_data)
+
+# Calculate the accuracy of the predictions
+confusion_matrix <- confusionMatrix(test_data$predicted_group, test_data$Group)
+accuracy <- confusion_matrix$overall['Accuracy']
+print(accuracy)
+
+# Analyze the accuracy of the obtained solutions for the test data
+print(confusion_matrix)
+
+# 1. Apply the decision tree method to the classification problem
+dt_model <- rpart(Group ~ ., data = train_data, method = "class")
+
+# 2. Explore the decision tree and plot it, if dimensionality permits
+print(dt_model)
+print("-------------")
+# 3. Analyze the accuracy of the obtained solutions for the test data
+test_data$predicted_group_dt <- predict(dt_model, test_data, type = "class")
+confusion_matrix_dt <- confusionMatrix(test_data$predicted_group_dt, test_data$Group)
+accuracy_dt <- confusion_matrix_dt$overall['Accuracy']
+print("-------------")
+print(accuracy_dt)
+print(confusion_matrix_dt)
+print("-------------")
+
+# 4. Perform classification using a random forest
+rf_model <- randomForest(Group ~ ., data = train_data, importance = TRUE)
+test_data$predicted_group_rf <- predict(rf_model, test_data)
+confusion_matrix_rf <- confusionMatrix(test_data$predicted_group_rf, test_data$Group)
+accuracy_rf <- confusion_matrix_rf$overall['Accuracy']
+print(accuracy_rf)
+print(confusion_matrix_rf)
+print("-------------")
+
+# 5. Compare the results with the results of the Bayesian classifier
+cat("Naive Bayes Accuracy:", accuracy, "\n")
+cat("Decision Tree Accuracy:", accuracy_dt, "\n")
+cat("Random Forest Accuracy:", accuracy_rf, "\n")
+
+# Plot the decision tree
+rpart.plot(dt_model, type = 4, extra = 101, tweak = 1.2, main = "Decision Tree")
+
+# Plot the variable importance for the random forest
+rf_var_imp <- importance(rf_model)
+rf_var_imp_df <- data.frame(Feature = rownames(rf_var_imp), Importance = rf_var_imp[, 1])
+ggplot(rf_var_imp_df, aes(x = reorder(Feature, Importance), y = Importance)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Random Forest Variable Importance", x = "Feature", y = "Importance") +
+  theme_minimal() +
+  coord_flip()
