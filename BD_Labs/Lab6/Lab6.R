@@ -12,6 +12,7 @@ library(rpart)
 library(rpart.plot)
 library(randomForest)
 library(gridExtra)
+library(knitr)
 
 
 data <- read.csv("BD_Labs/Lab6/student_mat.csv", header=TRUE, sep=",")
@@ -69,7 +70,11 @@ data_scaled <- scale(numeric_data)
 dist_matrix <- dist(data_scaled, method = "euclidean")
 
 # Cut the tree to get the desired number of groups
-k <- 3
+k <- 5
+
+# Build a diagram of the "Elbow method"
+fviz_nbclust(numeric_data, kmeans, method = "wss") + geom_vline(xintercept = k, linetype = 2)
+
 hc <- hclust(dist_matrix, method = "ward.D2")
 plot(hc, hang = -1)
 rect.hclust(hc, k = k, border = "red")
@@ -79,6 +84,9 @@ groups <- cutree(hc, k)
 # Calculate the average values for each group
 numeric_data$Group <- as.factor(groups)
 group_means <- aggregate(. ~ Group, numeric_data, mean)
+
+# nicely printed information for each group
+kable(group_means, caption = "Mean Parameters for Each Cluster")
 
 # Reshape the data frame to a long format
 group_means_long <- melt(group_means, id.vars = "Group")
@@ -92,8 +100,21 @@ ggplot(group_means_long, aes(x = Group, y = value, fill = variable)) +
   ggtitle("Average Values of Characteristics by Group") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-#  Step 3: Build a diagram of the "Elbow method" (Stone scree)
-fviz_nbclust(numeric_data, kmeans, method = "wss") + geom_vline(xintercept = k, linetype = 2)
+# Step 3: Stone scree
+# Extract the height values from the hierarchical clustering object
+height_values <- as.data.frame(hc$height)
+height_values$groups <- nrow(height_values):1
+colnames(height_values) <- c("height", "groups")
+print("Height_values")
+print(height_values)
+print("-------")
+ggplot(height_values, aes(x = groups, y = height)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of Groups") +
+  ylab("Height") +
+  ggtitle("Scree Plot for Hierarchical Clustering") +
+  theme_minimal()
 
 # Step 4: Scatterplot using ggplot2 (k-means clustering):
 ggplot(numeric_data, aes(x = G1, y = G2, color = Group)) +
