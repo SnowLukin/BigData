@@ -7,3 +7,4 @@
 - [x] Lab 4
 - [x] Lab 5
 - [x] Lab 6
+- [x] Lab 7
