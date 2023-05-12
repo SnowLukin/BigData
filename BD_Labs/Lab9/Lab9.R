@@ -10,6 +10,7 @@ g <- make_ring(G_size)
 cat("Number of vertices:", vcount(g), "\n")
 cat("Number of edges:", ecount(g), "\n")
 adj_matrix <- as_adjacency_matrix(g)
+plot(g)
 print(adj_matrix)
 
 # 2
@@ -50,11 +51,30 @@ cat(are_adjacent(g1, N+10, N+12), "\n")
 print(as_adjacency_matrix(g1))
 
 # 4
+# Create a vector of uppercase letters
+uppercase_letters <- LETTERS
+
+# Generate names for vertices
+vertex_names <- NULL
+
+# Calculate the number of iterations needed
+num_iterations <- ceiling((G_size + 1) / length(uppercase_letters))
+
+# Generate names for each iteration
+for (i in 1:num_iterations) {
+  start_index <- (i - 1) * length(uppercase_letters) + 1
+  end_index <- min(i * length(uppercase_letters), G_size + 1)
+
+  current_names <- c(uppercase_letters, paste0(uppercase_letters, uppercase_letters))
+
+  # Add names to the vertex_names vector
+  vertex_names <- c(vertex_names, current_names[start_index:end_index])
+}
+
 vertex_to_add <- which.max(degree(g1))
 g1 <- add_vertices(g1, 1)
 g1 <- add_edges(g1, c(vertex_to_add, vcount(g1)))
-# V(g1)$name <- c(LETTERS[1:(G_size+1)], letters[1:(G_size+1)])[1:(G_size+1)]
-V(g1)$name <- as.character(1:(G_size+1))
+V(g1)$name <- vertex_names[1:(G_size+1)]
 print(as_adjacency_matrix(g1))
 
 selected_vertices <- V(g1)[degree(g1) < 5 & degree(g1) > 2]
@@ -136,7 +156,7 @@ dijkstra <- function(graph, source) {
 
 # Read input
 # N <- as.integer(readline(prompt = "Enter the number of houses (N): "))
-# K <- as.integer(readline(prompt = "Enter the number of roads (K): "))
+# K <- as.integer(readline(prompt = "Enter the number of roads (K): ")) <-
 
 N <- 6 # Number of houses
 K <- 7 # Number of roads
