@@ -9,7 +9,7 @@ library(corrplot)
 
 
 # Read the dataset
-data <- read.csv("BD_Labs/Lab8/WB_Russia/ds_russia.csv")
+data <- read.csv("BD_Labs/Lab8/wb_georgia.csv")
 
 # Clean the data
 data <- data %>%
@@ -62,7 +62,7 @@ gdp_pop_growth <- gdp_pop_growth %>%
 ggplot(gdp_pop_growth, aes(x = year)) +
 	geom_line(aes(y = gdp_growth, color = "GDP Growth", group = 1)) +
 	geom_line(aes(y = pop_growth, color = "Population Growth", group = 1)) +
-	labs(title = "GDP Growth and Population Growth in Russia",
+	labs(title = "GDP Growth and Population Growth in Georgia",
 		 x = "Year",
 		 y = "Growth Rate (%)",
 		 color = "Indicator") +
@@ -106,7 +106,7 @@ unemployment_pop_growth <- unemployment_pop_growth %>%
 ggplot(unemployment_pop_growth, aes(x = year)) +
 	geom_line(aes(y = unemployment_rate, color = "Unemployment Rate", group = 1)) +
 	geom_line(aes(y = pop_growth, color = "Population Growth", group = 1)) +
-	labs(title = "Unemployment Rate and Population Growth in Russia",
+	labs(title = "Unemployment Rate and Population Growth in Georgia",
 		 x = "Year",
 		 y = "Rate (%)",
 		 color = "Indicator") +
@@ -155,7 +155,7 @@ death_rate_life_expectancy <- death_rate_life_expectancy %>%
 ggplot(death_rate_life_expectancy, aes(x = year)) +
   geom_line(aes(y = death_rate, color = "Death Rate", group = 1)) +
   geom_line(aes(y = life_expectancy, color = "Life Expectancy", group = 1)) +
-  labs(title = "Death Rate and Life Expectancy in Russia",
+  labs(title = "Death Rate and Life Expectancy in Georgia",
        x = "Year",
        y = "Rate/Expectancy",
        color = "Indicator") +
@@ -193,7 +193,7 @@ health_exp_life_expectancy <- health_exp_life_expectancy %>%
 ggplot(health_exp_life_expectancy, aes(x = year)) +
   geom_line(aes(y = health_expenditure, color = "Health Expenditure", group = 1)) +
   geom_line(aes(y = life_expectancy, color = "Life Expectancy", group = 1)) +
-  labs(title = "Health Expenditure and Life Expectancy in Russia",
+  labs(title = "Health Expenditure and Life Expectancy in Georgia",
        x = "Year",
        y = "Expenditure/Expectancy",
        color = "Indicator") +
@@ -241,7 +241,7 @@ edu_exports <- edu_exports %>%
 ggplot(edu_exports, aes(x = year)) +
   geom_line(aes(y = educational_attainment, color = "Educational Attainment", group = 1)) +
   geom_line(aes(y = exports_growth, color = "Exports Growth", group = 1)) +
-  labs(title = "Educational Attainment and Exports Growth in Russia",
+  labs(title = "Educational Attainment and Exports Growth in Georgia",
        x = "Year",
        y = "Percentage",
        color = "Indicator") +
@@ -279,7 +279,7 @@ edu_tech_ind <- edu_tech_ind %>%
 ggplot(edu_tech_ind, aes(x = year)) +
   geom_line(aes(y = education_attainment, color = "Educational Attainment", group = 1)) +
   geom_line(aes(y = tech_industry, color = "Tech Industry", group = 1)) +
-  labs(title = "Educational Attainment and Tech Industry in Russia",
+  labs(title = "Educational Attainment and Tech Industry in Georgia",
        x = "Year",
        y = "Percentage",
        color = "Indicator") +
@@ -326,7 +326,7 @@ uni_edu_women_edu_exp <- uni_edu_women_edu_exp %>%
 ggplot(uni_edu_women_edu_exp, aes(x = year)) +
   geom_line(aes(y = uni_edu_women, color = "Educational Attainment for Women", group = 1)) +
   geom_line(aes(y = edu_expenditure, color = "Education Expenditure (% of GDP)", group = 1)) +
-  labs(title = "Educational Attainment for Women and Education Expenditure in Russia",
+  labs(title = "Educational Attainment for Women and Education Expenditure in Georgia",
        x = "Year",
        y = "Percentage",
        color = "Indicator") +
@@ -372,7 +372,7 @@ uni_edu_articles <- uni_edu_articles %>%
 ggplot(uni_edu_articles, aes(x = year)) +
   geom_line(aes(y = education_attainment, color = "Education Attainment", group = 1)) +
   geom_line(aes(y = journal_articles, color = "Journal Articles", group = 1)) +
-  labs(title = "Educational Attainment and Journal Articles in Russia",
+  labs(title = "Educational Attainment and Journal Articles in Georgia",
        x = "Year",
        y = "Percentage/Count",
        color = "Indicator") +
